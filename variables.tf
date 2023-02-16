@@ -22,8 +22,22 @@ variable "stack_name" {
   default     = "aquasec"
 }
 
+variable "kms_aliases" {
+  description = "A list of aliases to create. Note - due to the use of toset(), values must be static strings and not computed values"
+  type        = list(string)
+  default = [
+    "alias/AquaCSPM-Control-Tower-aquasec"
+  ]
+}
+
+variable "enable_kms_key_roration" {
+  description = "Specifies whether key rotation is enabled. Defaults to true"
+  type        = bool
+  default     = true
+}
+
 variable "tags" {
-  description = "A map of tags to add to all resources"\
-  type = map(string)
-  default = {}
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+  default     = {}
 }

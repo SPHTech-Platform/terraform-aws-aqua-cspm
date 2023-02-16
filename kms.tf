@@ -7,9 +7,9 @@ module "kms" {
 
   policy = data.aws_iam_policy_document.aqua_cspm_control_tower_kms_key.json
 
-  aliases = [
-    "alias/AquaCSPM-Control-Tower-${local.stack_name}",
-  ]
+  aliases = var.kms_aliases
+
+  enable_key_rotation = var.enable_kms_key_roration
 
   tags = var.tags
 }
