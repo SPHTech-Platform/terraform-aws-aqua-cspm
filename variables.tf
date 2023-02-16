@@ -22,6 +22,9 @@ variable "stack_name" {
   default     = "aquasec"
 }
 
+#########
+## KMS ##
+#########
 variable "kms_aliases" {
   description = "A list of aliases to create. Note - due to the use of toset(), values must be static strings and not computed values"
   type        = list(string)
