@@ -1,7 +1,7 @@
 resource "aws_secretsmanager_secret" "aqua_cspm_secret" {
   description = "Secret that contains Aqua CSPM API URL and token"
   name        = "/aquacspm/secret_cspm"
-  kms_key_id  = aws_kms_key.cspm_kms_key.arn
+  kms_key_id  = module.kms.key_arn
 }
 
 resource "aws_secretsmanager_secret_version" "aqua_cspm_secret" {

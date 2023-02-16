@@ -15,3 +15,15 @@ variable "aqua_group_name" {
   type        = string
   default     = "Default"
 }
+
+variable "stack_name" {
+  description = "Stack Name"
+  type        = string
+  default     = "aquasec"
+}
+
+variable "tags" {
+  description = "A map of tags to add to all resources"\
+  type = map(string)
+  default = {}
+}
