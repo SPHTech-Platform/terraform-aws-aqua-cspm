@@ -243,7 +243,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       test     = "IpAddress"
       variable = "aws:SourceIp"
       values = [
-        "3.231.74.65/32",
+        local.public_up,
       ]
     }
   }
@@ -272,7 +272,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       test     = "IpAddress"
       variable = "aws:SourceIp"
       values = [
-        "3.231.74.65/32",
+        local.public_up,
       ]
     }
   }
@@ -301,7 +301,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       test     = "IpAddress"
       variable = "aws:SourceIp"
       values = [
-        "3.231.74.65/32",
+        local.public_up,
       ]
     }
   }
@@ -330,7 +330,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       test     = "IpAddress"
       variable = "aws:SourceIp"
       values = [
-        "3.231.74.65/32",
+        local.public_up,
       ]
     }
   }
