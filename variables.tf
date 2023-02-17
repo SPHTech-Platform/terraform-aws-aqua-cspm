@@ -1,3 +1,9 @@
+variable "tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+  default     = {}
+}
+
 variable "aqua_cspm_apikey" {
   description = "Aqua CSPM API key: Account Management > API Keys > Generate Key"
   type        = string
@@ -16,12 +22,6 @@ variable "aqua_group_name" {
   default     = "Default"
 }
 
-variable "stack_name" {
-  description = "Stack Name"
-  type        = string
-  default     = "aquasec"
-}
-
 #########
 ## KMS ##
 #########
@@ -29,7 +29,7 @@ variable "kms_aliases" {
   description = "A list of aliases to create. Note - due to the use of toset(), values must be static strings and not computed values"
   type        = list(string)
   default = [
-    "alias/AquaCSPM-Control-Tower-aquasec"
+    "alias/AquaCSPM-Control-Tower-AquaSec"
   ]
 }
 
@@ -37,10 +37,4 @@ variable "enable_kms_key_roration" {
   description = "Specifies whether key rotation is enabled. Defaults to true"
   type        = bool
   default     = true
-}
-
-variable "tags" {
-  description = "A map of tags to add to all resources"
-  type        = map(string)
-  default     = {}
 }

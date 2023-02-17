@@ -10,22 +10,23 @@ data "aws_iam_policy_document" "aqua_cspm_secret" {
     effect = "Allow"
 
     actions = [
-      "secretsmanager:GetSecretValue"
+      "secretsmanager:GetSecretValue",
     ]
 
     principals {
       type        = "AWS"
-      identifiers = aws_iam_role.lambda_role.arn
+      identifiers = [module.lambda_role.iam_role_arn]
     }
 
     resources = [
-      aws_secretsmanager_secret.aqua_cspm_secret.arn
+      aws_secretsmanager_secret.aqua_cspm_secret.arn,
     ]
   }
 }
 
 data "aws_iam_policy_document" "aqua_cspm_control_tower_kms_key" {
-
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
   statement {
     sid = "Allow administration of the key"
 
@@ -48,11 +49,11 @@ data "aws_iam_policy_document" "aqua_cspm_control_tower_kms_key" {
 
     principals {
       type        = "AWS"
-      identifiers = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
 
     resources = [
-      "*"
+      "*",
     ]
   }
 
@@ -72,18 +73,18 @@ data "aws_iam_policy_document" "aqua_cspm_control_tower_kms_key" {
 
     principals {
       type        = "AWS"
-      identifiers = data.aws_caller_identity.current.account_id
+      identifiers = [data.aws_caller_identity.current.account_id]
     }
 
     resources = [
-      "*"
+      "*",
     ]
 
     condition {
       test     = "StringEquals"
       variable = "kms:ViaService"
       values = [
-        "secretsmanager.${data.aws_region.current.name}.amazonaws.com"
+        "secretsmanager.${data.aws_region.current.name}.amazonaws.com",
       ]
     }
 
@@ -91,7 +92,7 @@ data "aws_iam_policy_document" "aqua_cspm_control_tower_kms_key" {
       test     = "StringEquals"
       variable = "kms:CallerAccount"
       values = [
-        data.aws_caller_identity.current.account_id
+        data.aws_caller_identity.current.account_id,
       ]
     }
   }
@@ -106,7 +107,7 @@ data "aws_iam_policy_document" "aqua_cspm_lambda" {
     ]
 
     resources = [
-      aws_secretsmanager_secret.aqua_cspm_secret.id
+      aws_secretsmanager_secret.aqua_cspm_secret.id,
     ]
   }
 
@@ -118,7 +119,7 @@ data "aws_iam_policy_document" "aqua_cspm_lambda" {
     ]
 
     resources = [
-      module.kms.key_arn
+      module.kms.key_arn,
     ]
   }
 }
@@ -208,11 +209,11 @@ data "aws_iam_policy_document" "aqua_cspm_supplemental" {
       "s3:ListBucket",
       "frauddetector:GetKMSEncryptionKey",
       "imagebuilder:ListImagePipelines",
-      "compute-optimizer:GetRecommendationSummaries"
+      "compute-optimizer:GetRecommendationSummaries",
     ]
 
     resources = [
-      "*"
+      "*",
     ]
   }
 }
@@ -222,19 +223,19 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
     effect = "Allow"
 
     actions = [
-      "sts:AssumeRole"
+      "sts:AssumeRole",
     ]
 
     principals {
       type        = "AWS"
-      identifiers = "arn:aws:iam::057012691312:role/lambda-cloudsploit-api"
+      identifiers = ["arn:aws:iam::057012691312:role/lambda-cloudsploit-api"]
     }
 
     condition {
       test     = "StringEquals"
       variable = "sts:ExternalId"
       values = [
-        "aws_glue_resource_policy.external_id_invoke.enable_hybrid"
+        local.external_id,
       ]
     }
 
@@ -242,7 +243,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       test     = "IpAddress"
       variable = "aws:SourceIp"
       values = [
-        "3.231.74.65/32"
+        "3.231.74.65/32",
       ]
     }
   }
@@ -251,19 +252,19 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
     effect = "Allow"
 
     actions = [
-      "sts:AssumeRole"
+      "sts:AssumeRole",
     ]
 
     principals {
       type        = "AWS"
-      identifiers = "arn:aws:iam::057012691312:role/lambda-cloudsploit-collector"
+      identifiers = ["arn:aws:iam::057012691312:role/lambda-cloudsploit-collector"]
     }
 
     condition {
       test     = "StringEquals"
       variable = "sts:ExternalId"
       values = [
-        "aws_glue_resource_policy.external_id_invoke.enable_hybrid"
+        local.external_id,
       ]
     }
 
@@ -271,7 +272,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       test     = "IpAddress"
       variable = "aws:SourceIp"
       values = [
-        "3.231.74.65/32"
+        "3.231.74.65/32",
       ]
     }
   }
@@ -280,19 +281,19 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
     effect = "Allow"
 
     actions = [
-      "sts:AssumeRole"
+      "sts:AssumeRole",
     ]
 
     principals {
       type        = "AWS"
-      identifiers = "arn:aws:iam::057012691312:role/lambda-cloudsploit-remediator"
+      identifiers = ["arn:aws:iam::057012691312:role/lambda-cloudsploit-remediator"]
     }
 
     condition {
       test     = "StringEquals"
       variable = "sts:ExternalId"
       values = [
-        "aws_glue_resource_policy.external_id_invoke.enable_hybrid"
+        local.external_id,
       ]
     }
 
@@ -300,7 +301,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       test     = "IpAddress"
       variable = "aws:SourceIp"
       values = [
-        "3.231.74.65/32"
+        "3.231.74.65/32",
       ]
     }
   }
@@ -309,19 +310,19 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
     effect = "Allow"
 
     actions = [
-      "sts:AssumeRole"
+      "sts:AssumeRole",
     ]
 
     principals {
       type        = "AWS"
-      identifiers = "arn:aws:iam::057012691312:role/lambda-cloudsploit-tasks"
+      identifiers = ["arn:aws:iam::057012691312:role/lambda-cloudsploit-tasks"]
     }
 
     condition {
       test     = "StringEquals"
       variable = "sts:ExternalId"
       values = [
-        "aws_glue_resource_policy.external_id_invoke.enable_hybrid"
+        local.external_id,
       ]
     }
 
@@ -329,7 +330,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       test     = "IpAddress"
       variable = "aws:SourceIp"
       values = [
-        "3.231.74.65/32"
+        "3.231.74.65/32",
       ]
     }
   }
