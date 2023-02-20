@@ -10,7 +10,9 @@ module "lambda" {
   memory_size = 128
   timeout     = 30
 
-  source_path = "${path.module}/src/lambda_function"
+  create_package         = false
+  local_existing_package = "${path.module}/src/lambda_function/lambda_function.zip"
+  #   source_path = "${path.module}/src/lambda_function"
 
   lambda_role = module.lambda_role.iam_role_arn
 
