@@ -10,7 +10,7 @@ module "lambda" {
   memory_size = 128
   timeout     = 30
 
-  source_path = "./src/lambda_function"
+  source_path = "${path.module}/src/lambda_function"
 
   lambda_role = module.lambda_role.iam_role_arn
 
