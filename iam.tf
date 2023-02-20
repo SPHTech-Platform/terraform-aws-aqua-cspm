@@ -41,12 +41,14 @@ module "aqua_cspm_role" {
   role_name        = "${local.name_prefix}-role"
   role_description = "Assumable Role of Aqua SaaS"
 
-  role_requires_mfa = false
-
   custom_role_trust_policy = data.aws_iam_policy_document.aqua_cspm_custom_trust.json
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/SecurityAudit",
     aws_iam_policy.aqua_cspm_supplemental.arn,
+  ]
+
+  depends_on = [
+    aws_lambda_invocation.external_id,
   ]
 }
