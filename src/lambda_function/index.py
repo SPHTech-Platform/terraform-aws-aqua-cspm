@@ -7,16 +7,14 @@ import hashlib
 import time
 import hmac
 import base64
+from botocore.exceptions import ClientError
 
 LOGGER = logging.getLogger()
 LOGGER.setLevel(logging.INFO)
 
-sess = boto3.session.Session()
-sm_client = sess.client('secretsmanager')
-
 def lambda_handler(event, ctxt):
     LOGGER.info('Lambda started :{}'.format(event))
-    aqua_url = 'https://api.cloudsploit.com'
+    aqua_url = 'https://asia-1.api.cloudsploit.com'
     rp = event['ResourceProperties']
     secret = rp['Secret']
     try:
@@ -56,11 +54,33 @@ def lambda_handler(event, ctxt):
 
 
 def get_conf(secret):
-    val = sm_client.get_secret_value(SecretId=secret)
-    resp = val['SecretString']
-    return json.loads(resp)
+    sess = boto3.session.Session()
+    sm_client = sess.client(service_name='secretsmanager', region_name='ap-southeast-1')
 
+    try:
+        val = sm_client.get_secret_value(SecretId=secret)
+        
+        if 'SecretString' in val:
+            resp = val['SecretString']
+        else:
+            resp = val['SecretBinary']
+        
+        LOGGER.info(f"Response: {json.dumps(resp)}")
+        return json.loads(resp)
 
+    except ClientError as e:
+        error_code = e.response['Error']['Code']
+        if error_code == 'ResourceNotFoundException':
+            LOGGER.error(f"The requested secret {secret} was not found")
+        elif error_code == 'InvalidRequestException':
+            LOGGER.error(f"The request was invalid due to: {e}")
+        elif error_code == 'InvalidParameterException':
+            LOGGER.error(f"The request had invalid params: {e}")
+        elif error_code == 'DecryptionFailure':
+            LOGGER.error(f"The requested secret can't be decrypted using the provided KMS key: {e}")
+        elif error_code == 'InternalServiceError':
+            LOGGER.error(f"An error occurred on service side: {e}")
+        
 def get_ext_id(url, api_key, aqua_secret):
     path = "/v2/generatedids"
     method = "POST"
