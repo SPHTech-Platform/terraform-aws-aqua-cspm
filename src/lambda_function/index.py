@@ -59,12 +59,12 @@ def get_conf(secret):
 
     try:
         val = sm_client.get_secret_value(SecretId=secret)
-        
+
         if 'SecretString' in val:
             resp = val['SecretString']
         else:
             resp = val['SecretBinary']
-        
+
         LOGGER.info(f"Response: {json.dumps(resp)}")
         return json.loads(resp)
 
@@ -80,7 +80,7 @@ def get_conf(secret):
             LOGGER.error(f"The requested secret can't be decrypted using the provided KMS key: {e}")
         elif error_code == 'InternalServiceError':
             LOGGER.error(f"An error occurred on service side: {e}")
-        
+
 def get_ext_id(url, api_key, aqua_secret):
     path = "/v2/generatedids"
     method = "POST"
