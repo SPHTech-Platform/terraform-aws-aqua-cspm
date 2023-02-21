@@ -336,6 +336,6 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
   }
 
   depends_on = [
-    aws_lambda_invocation.external_id,
+    data.aws_lambda_invocation.external_id,
   ]
 }

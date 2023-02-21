@@ -16,7 +16,7 @@ sm_client = sess.client('secretsmanager')
 
 def lambda_handler(event, ctxt):
     LOGGER.info('Lambda started :{}'.format(event))
-    aqua_url = 'https://api.cloudsploit.com'
+    aqua_url = 'https://asia-1.api.cloudsploit.com'
     rp = event['ResourceProperties']
     secret = rp['Secret']
     try:
