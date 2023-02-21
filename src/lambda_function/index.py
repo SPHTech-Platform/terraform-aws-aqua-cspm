@@ -87,7 +87,7 @@ def get_gid(url, api_key, aqua_secret, group):
     method = "GET"
     tstmp = str(int(time.time() * 1000))
     enc = tstmp + method + path
-        enc_b = bytes(enc, 'utf-8')
+    enc_b = bytes(enc, 'utf-8')
     secret = bytes(aqua_secret, 'utf-8')
     sig = hmac.new(secret, enc_b, hashlib.sha256).hexdigest()
     hdr = {
