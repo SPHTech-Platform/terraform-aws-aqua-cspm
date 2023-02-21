@@ -32,23 +32,44 @@ resource "aws_iam_policy" "aqua_cspm_supplemental" {
   policy      = data.aws_iam_policy_document.aqua_cspm_supplemental.json
 }
 
-module "aqua_cspm_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "~> 5.9.0"
+# module "aqua_cspm_role" {
+#   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+#   version = "~> 5.9.0"
 
-  create_role = true
+#   create_role = true
 
-  role_name        = "${local.name_prefix}-role"
-  role_description = "Assumable Role of Aqua SaaS"
+#   role_name        = "${local.name_prefix}-role"
+#   role_description = "Assumable Role of Aqua SaaS"
 
-  custom_role_trust_policy = data.aws_iam_policy_document.aqua_cspm_custom_trust.json
+#   custom_role_trust_policy = data.aws_iam_policy_document.aqua_cspm_custom_trust.json
 
-  custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/SecurityAudit",
-    aws_iam_policy.aqua_cspm_supplemental.arn,
-  ]
+#   custom_role_policy_arns = [
+#     "arn:aws:iam::aws:policy/SecurityAudit",
+#     aws_iam_policy.aqua_cspm_supplemental.arn,
+#   ]
+
+#   depends_on = [
+#     aws_lambda_invocation.external_id,
+#   ]
+# }
+
+resource "aws_iam_role" "aqua_cspm" {
+  name        = "${local.name_prefix}-role"
+  description = "Assumable Role of Aqua SaaS"
+
+  path                 = "/"
+  max_session_duration = "3600"
+
+  assume_role_policy = data.aws_iam_policy_document.aqua_cspm_custom_trust.json
 
   depends_on = [
     aws_lambda_invocation.external_id,
   ]
+}
+
+resource "aws_iam_role_policy_attachment" "aqua_cspm" {
+  count = length(local.aqua_cspm_role_policy_arns)
+
+  policy_arn = element(local.aqua_cspm_role_policy_arns, count.index)
+  role       = aws_iam_role.aqua_cspm.name
 }
