@@ -36,7 +36,7 @@ resource "aws_lambda_invocation" "onboarding" {
       Secret  = aws_secretsmanager_secret.aqua_cspm_secret.id,
       ExtId   = local.external_id,
       Group   = var.aqua_group_name,
-      RoleArn = module.aqua_cspm_role.iam_role_arn,
+      RoleArn = aws_iam_role.aqua_cspm.arn,
       AccId   = data.aws_caller_identity.current.account_id
     },
     LogicalResourceId = "OnboardingInvoke"

@@ -16,7 +16,6 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aqua_cspm_role"></a> [aqua\_cspm\_role](#module\_aqua\_cspm\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role | ~> 5.9.0 |
 | <a name="module_kms"></a> [kms](#module\_kms) | terraform-aws-modules/kms/aws | ~> 1.5.0 |
 | <a name="module_lambda"></a> [lambda](#module\_lambda) | terraform-aws-modules/lambda/aws | ~> 4.10.1 |
 | <a name="module_lambda_role"></a> [lambda\_role](#module\_lambda\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role | ~> 5.9.0 |
@@ -27,6 +26,8 @@
 |------|------|
 | [aws_iam_policy.aqua_cspm_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.aqua_cspm_supplemental](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_role.aqua_cspm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.aqua_cspm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_lambda_invocation.external_id](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_invocation) | resource |
 | [aws_lambda_invocation.onboarding](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_invocation) | resource |
 | [aws_secretsmanager_secret.aqua_cspm_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
