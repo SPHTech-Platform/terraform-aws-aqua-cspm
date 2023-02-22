@@ -59,3 +59,15 @@
 |------|-------------|
 | <a name="output_onboarding_data"></a> [onboarding\_data](#output\_onboarding\_data) | Details of the onboarding |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Create Lambda Zip Archive
+
+Need to Python Zip Archive with build libraries, Steps as follows:
+* Switch to `src/lambda_fuction` directory
+    `cd src/lambda_fuction`
+
+* Install the libraries by executing the following command
+    `pip3 install -r requirements.txt -t .`
+
+* Zip the directory
+    `zip -r9 lambda_function.zip *`

@@ -60,7 +60,6 @@ def get_conf(secret):
     resp = val['SecretString']
     return json.loads(resp)
 
-
 def get_ext_id(url, api_key, aqua_secret):
     path = "/v2/generatedids"
     method = "POST"
