@@ -228,7 +228,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::057012691312:role/lambda-cloudsploit-api"]
+      identifiers = ["arn:aws:iam::057012691312:role/uwbwh-lambda-cloudsploit-api"]
     }
 
     condition {
@@ -257,7 +257,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::057012691312:role/lambda-cloudsploit-collector"]
+      identifiers = ["arn:aws:iam::057012691312:role/uwbwh-lambda-cloudsploit-collector"]
     }
 
     condition {
@@ -286,7 +286,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::057012691312:role/lambda-cloudsploit-remediator"]
+      identifiers = ["arn:aws:iam::057012691312:role/uwbwh-lambda-cloudsploit-remediator"]
     }
 
     condition {
@@ -315,7 +315,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::057012691312:role/lambda-cloudsploit-tasks"]
+      identifiers = ["arn:aws:iam::057012691312:role/uwbwh-lambda-cloudsploit-tasks"]
     }
 
     condition {
