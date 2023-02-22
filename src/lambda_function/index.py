@@ -55,7 +55,7 @@ def lambda_handler(event, ctxt):
 
 def get_conf(secret):
     sess = boto3.session.Session()
-    sm_client = sess.client(service_name='secretsmanager', region_name='ap-southeast-1')
+    sm_client = sess.client(service_name='secretsmanager')
 
     try:
         val = sm_client.get_secret_value(SecretId=secret)
@@ -64,8 +64,6 @@ def get_conf(secret):
             resp = val['SecretString']
         else:
             resp = val['SecretBinary']
-
-        LOGGER.info(f"Response: {json.dumps(resp)}")
         return json.loads(resp)
 
     except ClientError as e:
