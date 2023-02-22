@@ -32,7 +32,8 @@ def lambda_handler(event, ctxt):
         try:
             extid = get_ext_id(aqua_url, aqua_api_key, aqua_secret)
             resData = {'ExternalId': extid}
-            return json.dumps({'status': 'SUCCESS', 'data': resData})
+            return resData
+            # return json.dumps({'status': 'SUCCESS', 'data': resData})
         except Exception as e:
             LOGGER.error(e)
             return json.dumps({'status': 'FAILED', 'message': str(e)})
