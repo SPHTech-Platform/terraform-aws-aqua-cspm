@@ -5,14 +5,13 @@ module "lambda" {
   function_name = "${local.name_prefix}-function"
   description   = "Retrieves the External ID from Aqua CSPM"
   handler       = "index.lambda_handler"
-  runtime       = "python3.7"
+  runtime       = "python3.9"
 
   memory_size = 128
   timeout     = 30
 
   create_package         = false
   local_existing_package = "${path.module}/src/lambda_function/lambda_function.zip"
-  #   source_path = "${path.module}/src/lambda_function"
 
   lambda_role = module.lambda_role.iam_role_arn
 
