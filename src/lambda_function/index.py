@@ -7,10 +7,12 @@ import hashlib
 import time
 import hmac
 import base64
-from botocore.exceptions import ClientError
 
 LOGGER = logging.getLogger()
 LOGGER.setLevel(logging.INFO)
+
+sess = boto3.session.Session()
+sm_client = sess.client('secretsmanager')
 
 def lambda_handler(event, ctxt):
     LOGGER.info('Lambda started :{}'.format(event))
@@ -54,30 +56,9 @@ def lambda_handler(event, ctxt):
 
 
 def get_conf(secret):
-    sess = boto3.session.Session()
-    sm_client = sess.client(service_name='secretsmanager')
-
-    try:
-        val = sm_client.get_secret_value(SecretId=secret)
-
-        if 'SecretString' in val:
-            resp = val['SecretString']
-        else:
-            resp = val['SecretBinary']
-        return json.loads(resp)
-
-    except ClientError as e:
-        error_code = e.response['Error']['Code']
-        if error_code == 'ResourceNotFoundException':
-            LOGGER.error(f"The requested secret {secret} was not found")
-        elif error_code == 'InvalidRequestException':
-            LOGGER.error(f"The request was invalid due to: {e}")
-        elif error_code == 'InvalidParameterException':
-            LOGGER.error(f"The request had invalid params: {e}")
-        elif error_code == 'DecryptionFailure':
-            LOGGER.error(f"The requested secret can't be decrypted using the provided KMS key: {e}")
-        elif error_code == 'InternalServiceError':
-            LOGGER.error(f"An error occurred on service side: {e}")
+    val = sm_client.get_secret_value(SecretId=secret)
+    resp = val['SecretString']
+    return json.loads(resp)
 
 def get_ext_id(url, api_key, aqua_secret):
     path = "/v2/generatedids"

@@ -18,7 +18,7 @@ module "lambda" {
   tags = var.tags
 }
 
-resource "aws_lambda_invocation" "external_id" {
+data "aws_lambda_invocation" "external_id" {
   function_name = module.lambda.lambda_function_name
   input = jsonencode({
     ResourceProperties = {
@@ -28,7 +28,7 @@ resource "aws_lambda_invocation" "external_id" {
   })
 }
 
-resource "aws_lambda_invocation" "onboarding" {
+data "aws_lambda_invocation" "onboarding" {
   function_name = module.lambda.lambda_function_name
   input = jsonencode({
     ResourceProperties = {
