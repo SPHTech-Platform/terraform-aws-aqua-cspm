@@ -13,6 +13,7 @@ module "lambda" {
   create_package         = false
   local_existing_package = "${path.module}/src/lambda_function/lambda_function.zip"
 
+  create_role = false
   lambda_role = module.lambda_role.iam_role_arn
 
   tags = var.tags
