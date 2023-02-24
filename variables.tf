@@ -33,7 +33,7 @@ variable "kms_aliases" {
   ]
 }
 
-variable "enable_kms_key_roration" {
+variable "enable_kms_key_rotation" {
   description = "Specifies whether key rotation is enabled. Defaults to true"
   type        = bool
   default     = true

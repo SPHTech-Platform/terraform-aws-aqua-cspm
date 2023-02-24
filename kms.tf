@@ -9,7 +9,7 @@ module "kms" {
 
   aliases = var.kms_aliases
 
-  enable_key_rotation = var.enable_kms_key_roration
+  enable_key_rotation = var.enable_kms_key_rotation
 
   tags = var.tags
 }
