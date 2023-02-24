@@ -41,4 +41,9 @@ data "aws_lambda_invocation" "onboarding" {
     },
     LogicalResourceId = "OnboardingInvoke"
   })
+
+  depends_on = [
+    data.aws_lambda_invocation.external_id,
+    aws_iam_role.aqua_cspm,
+  ]
 }
