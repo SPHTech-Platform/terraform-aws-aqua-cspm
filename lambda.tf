@@ -27,6 +27,10 @@ data "aws_lambda_invocation" "external_id" {
     },
     LogicalResourceId = "ExternalIDInvoke"
   })
+
+  depends_on = [
+    aws_secretsmanager_secret_version.aqua_cspm_secret,
+  ]
 }
 
 data "aws_lambda_invocation" "onboarding" {
@@ -43,6 +47,7 @@ data "aws_lambda_invocation" "onboarding" {
   })
 
   depends_on = [
+    time_sleep.wait_10_seconds,
     data.aws_lambda_invocation.external_id,
     aws_iam_role.aqua_cspm,
   ]
