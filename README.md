@@ -49,7 +49,7 @@
 | <a name="input_aqua_cspm_apikey"></a> [aqua\_cspm\_apikey](#input\_aqua\_cspm\_apikey) | Aqua CSPM API key: Account Management > API Keys > Generate Key | `string` | n/a | yes |
 | <a name="input_aqua_cspm_secretkey"></a> [aqua\_cspm\_secretkey](#input\_aqua\_cspm\_secretkey) | Aqua CSPM Secret | `string` | n/a | yes |
 | <a name="input_aqua_group_name"></a> [aqua\_group\_name](#input\_aqua\_group\_name) | Aqua CSPM Group Name from the Aqua Wave console | `string` | `"Default"` | no |
-| <a name="input_enable_kms_key_roration"></a> [enable\_kms\_key\_roration](#input\_enable\_kms\_key\_roration) | Specifies whether key rotation is enabled. Defaults to true | `bool` | `true` | no |
+| <a name="input_enable_kms_key_rotation"></a> [enable\_kms\_key\_rotation](#input\_enable\_kms\_key\_rotation) | Specifies whether key rotation is enabled. Defaults to true | `bool` | `true` | no |
 | <a name="input_kms_aliases"></a> [kms\_aliases](#input\_kms\_aliases) | A list of aliases to create. Note - due to the use of toset(), values must be static strings and not computed values | `list(string)` | <pre>[<br>  "alias/AquaCSPM-Control-Tower-AquaSec"<br>]</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |
 

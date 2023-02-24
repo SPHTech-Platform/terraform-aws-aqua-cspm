@@ -239,13 +239,13 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       ]
     }
 
-    condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values = [
-        local.public_ip,
-      ]
-    }
+    # condition {
+    #   test     = "IpAddress"
+    #   variable = "aws:SourceIp"
+    #   values = [
+    #     local.public_ip,
+    #   ]
+    # }
   }
 
   statement {
@@ -268,13 +268,13 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       ]
     }
 
-    condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values = [
-        local.public_ip,
-      ]
-    }
+    # condition {
+    #   test     = "IpAddress"
+    #   variable = "aws:SourceIp"
+    #   values = [
+    #     local.public_ip,
+    #   ]
+    # }
   }
 
   statement {
@@ -297,13 +297,13 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       ]
     }
 
-    condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values = [
-        local.public_ip,
-      ]
-    }
+    # condition {
+    #   test     = "IpAddress"
+    #   variable = "aws:SourceIp"
+    #   values = [
+    #     local.public_ip,
+    #   ]
+    # }
   }
 
   statement {
@@ -326,13 +326,13 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       ]
     }
 
-    condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values = [
-        local.public_ip,
-      ]
-    }
+    # condition {
+    #   test     = "IpAddress"
+    #   variable = "aws:SourceIp"
+    #   values = [
+    #     local.public_ip,
+    #   ]
+    # }
   }
 
   depends_on = [
