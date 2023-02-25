@@ -19,7 +19,7 @@ module "lambda" {
   tags = var.tags
 }
 
-data "aws_lambda_invocation" "external_id" {
+resource "aws_lambda_invocation" "external_id" {
   function_name = module.lambda.lambda_function_name
   input = jsonencode({
     ResourceProperties = {
@@ -27,9 +27,13 @@ data "aws_lambda_invocation" "external_id" {
     },
     LogicalResourceId = "ExternalIDInvoke"
   })
+
+  depends_on = [
+    aws_secretsmanager_secret_version.aqua_cspm_secret,
+  ]
 }
 
-data "aws_lambda_invocation" "onboarding" {
+resource "aws_lambda_invocation" "onboarding" {
   function_name = module.lambda.lambda_function_name
   input = jsonencode({
     ResourceProperties = {
@@ -43,7 +47,16 @@ data "aws_lambda_invocation" "onboarding" {
   })
 
   depends_on = [
-    data.aws_lambda_invocation.external_id,
+    time_sleep.wait_10_seconds,
+    aws_lambda_invocation.external_id,
     aws_iam_role.aqua_cspm,
   ]
+}
+
+resource "time_sleep" "wait_10_seconds" {
+  depends_on = [
+    aws_lambda_invocation.external_id,
+  ]
+
+  create_duration = "10s"
 }

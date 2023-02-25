@@ -119,18 +119,25 @@ def register(url, api_key, aqua_secret, acc, role, ext_id, gid):
     }
     body_str = json.dumps(body, separators=(',', ':'))
     LOGGER.info(body_str)
-    enc = tstmp + method + path + body_str
-    enc_b = bytes(enc, 'utf-8')
-    secret = bytes(aqua_secret, 'utf-8')
-    sig = hmac.new(secret, enc_b, hashlib.sha256).hexdigest()
-    hdr = {
-        "Accept": "application/json",
-        "X-API-Key": api_key,
-        "X-Signature": sig,
-        "X-Timestamp": tstmp,
-        "content-type": "application/json"
-    }
     http = urllib3.PoolManager()
-    req = http.request('POST', url + path, headers=hdr, body=body_str)
-    res = req.data
-    LOGGER.info(f'Registration: {res}')
+
+    for i in range(3):
+        enc = tstmp + method + path + body_str
+        enc_b = bytes(enc, 'utf-8')
+        secret = bytes(aqua_secret, 'utf-8')
+        sig = hmac.new(secret, enc_b, hashlib.sha256).hexdigest()
+        hdr = {
+            "Accept": "application/json",
+            "X-API-Key": api_key,
+            "X-Signature": sig,
+            "X-Timestamp": tstmp,
+            "content-type": "application/json"
+        }
+        req = http.request('POST', url + path, headers=hdr, body=body_str)
+        res = req.data
+        if req.status >= 200 and req.status <= 202:
+            LOGGER.info(f'Registration: {res}')
+            break
+        else:
+            LOGGER.warning(f'Registration failed on attempt {i+1}: {res}')
+            time.sleep(2) # wait for 2 second before retrying
