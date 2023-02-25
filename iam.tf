@@ -42,7 +42,7 @@ resource "aws_iam_role" "aqua_cspm" {
   assume_role_policy = data.aws_iam_policy_document.aqua_cspm_custom_trust.json
 
   depends_on = [
-    data.aws_lambda_invocation.external_id,
+    aws_lambda_invocation.external_id,
   ]
 }
 
