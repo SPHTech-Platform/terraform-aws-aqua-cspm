@@ -23,7 +23,7 @@ resource "aws_lambda_invocation" "external_id" {
   function_name = module.lambda.lambda_function_name
   input = jsonencode({
     ResourceProperties = {
-      Secret = aws_secretsmanager_secret.aqua_cspm_secret.id
+      Secret = local.secret_name
     },
     LogicalResourceId = "ExternalIDInvoke"
   })
@@ -37,7 +37,7 @@ resource "aws_lambda_invocation" "onboarding" {
   function_name = module.lambda.lambda_function_name
   input = jsonencode({
     ResourceProperties = {
-      Secret  = aws_secretsmanager_secret.aqua_cspm_secret.id,
+      Secret  = local.secret_name,
       ExtId   = local.external_id,
       Group   = var.aqua_group_name,
       RoleArn = aws_iam_role.aqua_cspm.arn,
