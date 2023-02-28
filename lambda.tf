@@ -38,7 +38,7 @@ resource "aws_lambda_invocation" "onboarding" {
   input = jsonencode({
     ResourceProperties = {
       Secret  = local.secret_name,
-      ExtId   = jsondecode(aws_lambda_invocation.external_id.result)["ExternalId"],
+      ExtId   = local.external_id,
       Group   = var.aqua_group_name,
       RoleArn = aws_iam_role.aqua_cspm.arn,
       AccId   = data.aws_caller_identity.current.account_id

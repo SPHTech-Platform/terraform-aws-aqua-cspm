@@ -235,7 +235,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       test     = "StringEquals"
       variable = "sts:ExternalId"
       values = [
-        jsondecode(aws_lambda_invocation.external_id.result)["ExternalId"],
+        local.external_id,
       ]
     }
 
@@ -264,7 +264,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       test     = "StringEquals"
       variable = "sts:ExternalId"
       values = [
-        jsondecode(aws_lambda_invocation.external_id.result)["ExternalId"],
+        local.external_id,
       ]
     }
 
@@ -293,7 +293,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       test     = "StringEquals"
       variable = "sts:ExternalId"
       values = [
-        jsondecode(aws_lambda_invocation.external_id.result)["ExternalId"],
+        local.external_id,
       ]
     }
 
@@ -322,7 +322,7 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
       test     = "StringEquals"
       variable = "sts:ExternalId"
       values = [
-        jsondecode(aws_lambda_invocation.external_id.result)["ExternalId"],
+        local.external_id,
       ]
     }
 
