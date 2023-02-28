@@ -34,8 +34,8 @@ def lambda_handler(event, ctxt):
         for i in range(max_attempts):
             try:
                 extid = get_ext_id(aqua_url, aqua_api_key, aqua_secret)
-                resData = {'ExternalId': extid}
-                return resData
+                sucExtID = {'status': 'SUCCESS', 'ExternalId': extid}
+                return sucExtID
             except Exception as e:
                 LOGGER.error(e)
                 if i == max_attempts - 1:
@@ -48,13 +48,11 @@ def lambda_handler(event, ctxt):
         group = rp['Group']
         role_arn = rp['RoleArn']
         acc = rp['AccId']
-        onbData = {}
         try:
             g_id = get_gid(aqua_url, aqua_api_key, aqua_secret, group)
             register(aqua_url, aqua_api_key, aqua_secret, acc, role_arn, extid, g_id)
             LOGGER.info(f'Account registered {acc}')
-            onbData = {'AccountId': acc, 'Registered': True}
-            sucMsg = {'status': 'SUCCESS', 'data': onbData}
+            sucMsg = {'status': 'SUCCESS', 'AccountId': acc, 'Registered': True}
             return sucMsg
         except Exception as e:
             LOGGER.error(e)
