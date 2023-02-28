@@ -30,14 +30,17 @@ def lambda_handler(event, ctxt):
 
     if event['LogicalResourceId'] == 'ExternalIDInvoke':
         LOGGER.info('ExtID creation started :{}'.format(event))
-        try:
-            extid = get_ext_id(aqua_url, aqua_api_key, aqua_secret)
-            resData = {'ExternalId': extid}
-            return resData
-        except Exception as e:
-            LOGGER.error(e)
-            failExtID = {'status': 'FAILED', 'message': str(e)}
-            return failExtID
+        max_attempts = 3
+        for i in range(max_attempts):
+            try:
+                extid = get_ext_id(aqua_url, aqua_api_key, aqua_secret)
+                resData = {'ExternalId': extid}
+                return resData
+            except Exception as e:
+                LOGGER.error(e)
+                if i == max_attempts - 1:
+                    failExtID = {'status': 'FAILED', 'message': str(e)}
+                    return failExtID
 
     elif event['LogicalResourceId'] == 'OnboardingInvoke':
         LOGGER.info('Onboarding started :{}'.format(event))
