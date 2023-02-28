@@ -19,45 +19,45 @@ module "lambda" {
   tags = var.tags
 }
 
-resource "aws_lambda_invocation" "external_id" {
-  function_name = module.lambda.lambda_function_name
-  input = jsonencode({
-    ResourceProperties = {
-      Secret = local.secret_name
-    },
-    LogicalResourceId = "ExternalIDInvoke"
-  })
+# resource "aws_lambda_invocation" "external_id" {
+#   function_name = module.lambda.lambda_function_name
+#   input = jsonencode({
+#     ResourceProperties = {
+#       Secret = local.secret_name
+#     },
+#     LogicalResourceId = "ExternalIDInvoke"
+#   })
 
-  depends_on = [
-    module.lambda,
-    aws_secretsmanager_secret_version.aqua_cspm_secret,
-  ]
-}
+#   depends_on = [
+#     module.lambda,
+#     aws_secretsmanager_secret_version.aqua_cspm_secret,
+#   ]
+# }
 
-resource "aws_lambda_invocation" "onboarding" {
-  function_name = module.lambda.lambda_function_name
-  input = jsonencode({
-    ResourceProperties = {
-      Secret  = local.secret_name,
-      ExtId   = local.external_id,
-      Group   = var.aqua_group_name,
-      RoleArn = aws_iam_role.aqua_cspm.arn,
-      AccId   = data.aws_caller_identity.current.account_id
-    },
-    LogicalResourceId = "OnboardingInvoke"
-  })
+# resource "aws_lambda_invocation" "onboarding" {
+#   function_name = module.lambda.lambda_function_name
+#   input = jsonencode({
+#     ResourceProperties = {
+#       Secret  = local.secret_name,
+#       ExtId   = local.external_id,
+#       Group   = var.aqua_group_name,
+#       RoleArn = aws_iam_role.aqua_cspm.arn,
+#       AccId   = data.aws_caller_identity.current.account_id
+#     },
+#     LogicalResourceId = "OnboardingInvoke"
+#   })
 
-  depends_on = [
-    time_sleep.wait_10_seconds,
-    aws_lambda_invocation.external_id,
-    aws_iam_role.aqua_cspm,
-  ]
-}
+#   depends_on = [
+#     time_sleep.wait_10_seconds,
+#     aws_lambda_invocation.external_id,
+#     aws_iam_role.aqua_cspm,
+#   ]
+# }
 
-resource "time_sleep" "wait_10_seconds" {
-  depends_on = [
-    aws_lambda_invocation.external_id,
-  ]
+# resource "time_sleep" "wait_10_seconds" {
+#   depends_on = [
+#     aws_lambda_invocation.external_id,
+#   ]
 
-  create_duration = "10s"
-}
+#   create_duration = "10s"
+# }
