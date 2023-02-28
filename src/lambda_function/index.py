@@ -25,7 +25,8 @@ def lambda_handler(event, ctxt):
         aqua_secret = conf['aqua_secret']
     except Exception as e:
         LOGGER.error('Error retrieving Keys: {e}')
-        return json.dumps({'status': 'FAILED', 'message': 'Error retrieving Keys'})
+        failRetKey = {'status': 'FAILED', 'message': 'Error retrieving Keys'}
+        return failRetKey
 
     if event['LogicalResourceId'] == 'ExternalIDInvoke':
         LOGGER.info('ExtID creation started :{}'.format(event))
@@ -35,7 +36,8 @@ def lambda_handler(event, ctxt):
             return resData
         except Exception as e:
             LOGGER.error(e)
-            return json.dumps({'status': 'FAILED', 'message': str(e)})
+            failExtID = {'status': 'FAILED', 'message': str(e)}
+            return failExtID
 
     elif event['LogicalResourceId'] == 'OnboardingInvoke':
         LOGGER.info('Onboarding started :{}'.format(event))
@@ -49,10 +51,12 @@ def lambda_handler(event, ctxt):
             register(aqua_url, aqua_api_key, aqua_secret, acc, role_arn, extid, g_id)
             LOGGER.info(f'Account registered {acc}')
             onbData = {'AccountId': acc, 'Registered': True}
-            return json.dumps({'status': 'SUCCESS', 'data': onbData})
+            sucMsg = {'status': 'SUCCESS', 'data': onbData}
+            return sucMsg
         except Exception as e:
             LOGGER.error(e)
-            return json.dumps({'status': 'FAILED', 'message': str(e)})
+            errMsg = {'status': 'FAILED', 'message': str(e)}
+            return errMsg
 
 
 def get_conf(secret):
