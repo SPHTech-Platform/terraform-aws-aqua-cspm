@@ -29,6 +29,7 @@ resource "aws_lambda_invocation" "external_id" {
   })
 
   depends_on = [
+    module.lambda,
     aws_secretsmanager_secret_version.aqua_cspm_secret,
   ]
 }
