@@ -140,9 +140,41 @@ def register(url, api_key, aqua_secret, acc, role, ext_id, gid):
         }
         req = http.request('POST', url + path, headers=hdr, body=body_str)
         res = req.data
-        if req.status >= 200 and req.status <= 202:
+        if req.status == 201:
             LOGGER.info(f'Registration: {res}')
             break
         else:
             LOGGER.warning(f'Registration failed on attempt {i+1}: {res}')
+            time.sleep(2) # wait for 2 second before retrying
+
+def dis_delivery (url, api_key, aqua_secret):
+    path = "/v2/deliveries"
+    method = "PUT"
+    tstmp = str(int(time.time() * 1000))
+    body = {
+        "send_new_risks": "false"
+    }
+    body_str = json.dumps(body, separators=(',', ':'))
+    LOGGER.info(body_str)
+    http = urllib3.PoolManager()
+
+    for i in range(3):
+        enc = tstmp + method + path + body_str
+        enc_b = bytes(enc, 'utf-8')
+        secret = bytes(aqua_secret, 'utf-8')
+        sig = hmac.new(secret, enc_b, hashlib.sha256).hexdigest()
+        hdr = {
+            "Accept": "application/json",
+            "X-API-Key": api_key,
+            "X-Signature": sig,
+            "X-Timestamp": tstmp,
+            "content-type": "application/json"
+        }
+        req = http.request(method, url + path, headers=hdr, body=body_str)
+        res = req.data
+        if req.status == 200:
+            LOGGER.info(f'Deliveries: {res}')
+            break
+        else:
+            LOGGER.warning(f'Delivery Disable failed on attempt {i+1}: {res}')
             time.sleep(2) # wait for 2 second before retrying
