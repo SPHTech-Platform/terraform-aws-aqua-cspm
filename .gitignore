@@ -40,3 +40,4 @@ terraform.rc
 
 # Excluded locally build files
 **/zip/**
+**/test-ip/**
