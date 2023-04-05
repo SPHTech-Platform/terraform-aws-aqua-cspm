@@ -31,6 +31,7 @@ resource "aws_lambda_invocation" "external_id" {
   depends_on = [
     module.lambda,
     aws_secretsmanager_secret_version.aqua_cspm_secret,
+    time_sleep.wait_10_aqua_cspm_secret,
   ]
 }
 
@@ -57,6 +58,14 @@ resource "aws_lambda_invocation" "onboarding" {
 resource "time_sleep" "wait_10_seconds" {
   depends_on = [
     aws_lambda_invocation.external_id,
+  ]
+
+  create_duration = "10s"
+}
+
+resource "time_sleep" "wait_10_aqua_cspm_secret" {
+  depends_on = [
+    aws_secretsmanager_secret_version.aqua_cspm_secret,
   ]
 
   create_duration = "10s"
