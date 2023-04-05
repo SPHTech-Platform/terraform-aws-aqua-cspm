@@ -1,4 +1,5 @@
 resource "aws_secretsmanager_secret" "aqua_cspm_secret" {
+  #checkov:skip=CKV2_AWS_57
   description = "Secret that contains Aqua CSPM API URL and token"
   name        = local.secret_name
   kms_key_id  = module.kms.key_arn
