@@ -210,6 +210,20 @@ data "aws_iam_policy_document" "aqua_cspm_supplemental" {
       "frauddetector:GetKMSEncryptionKey",
       "imagebuilder:ListImagePipelines",
       "compute-optimizer:GetRecommendationSummaries",
+      "cloudtrail:DescribeTrails",
+      "rds:DescribeDBInstances",
+      "ec2:DescribeSecurityGroups",
+      "EC2:describeVpcs",
+      "EC2:describeInstances",
+      "ELB:describeLoadBalancers",
+      "Lambda:listFunctions",
+      "RDS:describeDBInstances",
+      "Redshift:describeClusters",
+      "EC2:describeVolumes",
+      "KMS:describeKey",
+      "KMS:listKeys",
+      "STS:getCallerIdentity",
+      "EC2:describeInstances",
     ]
 
     resources = [
