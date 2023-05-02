@@ -91,7 +91,7 @@ def integrate(url, api_key, aqua_secret, acc, role, ext_id, region, notification
         "role_arn": role,
         "external_id": ext_id,
         "product_arn": "arn:aws:securityhub:" + region + "::product/aquasecurity/aquasecurity"
-        },     
+        },
         "type": "securityhub"
     }
     if notificationType == 'Send New Risks Only':
