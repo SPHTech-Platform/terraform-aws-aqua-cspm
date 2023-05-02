@@ -38,3 +38,24 @@ variable "enable_kms_key_rotation" {
   type        = bool
   default     = true
 }
+
+#############################
+# Security Hub integration
+#############################
+
+variable "enable_security_hub_integration" {
+  description = "Enables security hub integration with CSPM. Defaults to true"
+  type        = bool
+  default     = true
+}
+
+variable "sechub_notification_type" {
+  description = "Select which findings to send to AWS security hub. Defaults to Send All Scan Reports"
+  type        = string
+  default     = "Send All Scan Reports"
+
+  validation {
+    condition     = contains(["Send All Scan Reports|Send Only Failed Scan Reports"], var.sechub_notification_type)
+    error_message = "sechub_notification_type must be either Send All Scan Reports or Send Only Failed Scan Reports"
+  }
+}

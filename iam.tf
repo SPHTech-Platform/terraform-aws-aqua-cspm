@@ -52,3 +52,34 @@ resource "aws_iam_role_policy_attachment" "aqua_cspm" {
   policy_arn = element(local.aqua_cspm_role_policy_arns, count.index)
   role       = aws_iam_role.aqua_cspm.name
 }
+
+
+resource "aws_iam_policy" "aquasec_importfindings" {
+  count = var.enable_security_hub_integration ? 1 : 0
+
+  name_prefix = "${local.name_prefix}-sechub-import-findings-"
+  policy      = data.aws_iam_policy_document.aquasec_importfindings.json
+}
+
+resource "aws_iam_role" "aqua_cspm_sechub" {
+  count = var.enable_security_hub_integration ? 1 : 0
+
+  depends_on = [
+    aws_lambda_invocation.sechub_integration_external_id,
+  ]
+
+  name        = "${local.name_prefix}-sechub-import-role"
+  description = "Role assumed by AquaSec for importing Sechub findings from CSPM"
+
+  path                 = "/"
+  max_session_duration = "3600"
+
+  assume_role_policy = data.aws_iam_policy_document.aquahub_sechub_trust.json
+}
+
+resource "aws_iam_role_policy_attachment" "aqua_cspm_sechub" {
+  count = var.enable_security_hub_integration ? 1 : 0
+
+  policy_arn = aws_iam_policy.aquasec_importfindings[0].arn
+  role       = aws_iam_role.aqua_cspm_sechub[0].name
+}
