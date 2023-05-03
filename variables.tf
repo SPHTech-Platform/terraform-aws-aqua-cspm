@@ -55,7 +55,7 @@ variable "sechub_notification_type" {
   default     = "Send All Scan Reports"
 
   validation {
-    condition     = contains(["Send All Scan Reports","Send Only Failed Scan Reports"], var.sechub_notification_type)
+    condition     = contains(["Send All Scan Reports", "Send Only Failed Scan Reports"], var.sechub_notification_type)
     error_message = "sechub_notification_type must be either Send All Scan Reports or Send Only Failed Scan Reports"
   }
 }
