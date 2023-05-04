@@ -44,9 +44,10 @@ def lambda_handler(event, ctxt):
         role_arn = rp['RoleArn']
         notifications = rp['ScanNotifications']
         acc = rp['AccId']
+        enabled = rp['Enabled']
         intData = {}
         try:
-            integrate(aqua_url, aqua_api_key, aqua_secret, acc, role_arn, extid, region, notifications)
+            integrate(aqua_url, aqua_api_key, aqua_secret, enabled, acc, role_arn, extid, region, notifications)
             LOGGER.info(f'Integration successful {acc}')
             sucMsg = {'status': 'SUCCESS', 'AccountId': acc, 'Integrating': True}
             return sucMsg
@@ -80,12 +81,12 @@ def get_ext_id(url, api_key, aqua_secret):
     res = json.loads(req.data.decode('utf-8'))
     return res['data'][0]['generated_id']
 
-def integrate(url, api_key, aqua_secret, acc, role, ext_id, region, notificationType):
+def integrate(url, api_key, aqua_secret, enabled, acc, role, ext_id, region, notificationType):
     path = "/v2/integrations"
     method = "POST"
     tstmp = str(int(time.time() * 1000))
     body = {
-        "enabled": True,
+        "enabled": enabled,
         "name": "security_hub_" + acc,
         "settings": {
         "role_arn": role,

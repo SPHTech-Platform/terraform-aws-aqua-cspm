@@ -55,15 +55,11 @@ resource "aws_iam_role_policy_attachment" "aqua_cspm" {
 
 
 resource "aws_iam_policy" "aquasec_importfindings" {
-  count = local.enable_security_hub_integration ? 1 : 0
-
   name_prefix = "${local.name_prefix}-sechub-import-findings-"
   policy      = data.aws_iam_policy_document.aquasec_importfindings.json
 }
 
 resource "aws_iam_role" "aqua_cspm_sechub" {
-  count = local.enable_security_hub_integration ? 1 : 0
-
   depends_on = [
     aws_lambda_invocation.sechub_integration_external_id,
   ]
@@ -78,8 +74,6 @@ resource "aws_iam_role" "aqua_cspm_sechub" {
 }
 
 resource "aws_iam_role_policy_attachment" "aqua_cspm_sechub" {
-  count = local.enable_security_hub_integration ? 1 : 0
-
-  policy_arn = aws_iam_policy.aquasec_importfindings[0].arn
-  role       = aws_iam_role.aqua_cspm_sechub[0].name
+  policy_arn = aws_iam_policy.aquasec_importfindings.arn
+  role       = aws_iam_role.aqua_cspm_sechub.name
 }
