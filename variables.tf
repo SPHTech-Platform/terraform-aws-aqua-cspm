@@ -42,20 +42,21 @@ variable "enable_kms_key_rotation" {
 #############################
 # Security Hub integration
 #############################
-
-variable "enable_security_hub_integration" {
-  description = "Enables security hub integration with CSPM. Defaults to true"
-  type        = bool
-  default     = true
-}
-
-variable "sechub_notification_type" {
-  description = "Select which findings to send to AWS security hub. Defaults to Send All Scan Reports"
-  type        = string
-  default     = "Send All Scan Reports"
+variable "aqua_sechub_integration" {
+  description = <<-EOF
+    Enables aqua security hub integration. If enabled, findings from Aquasec will be pushed to security hub.
+    Notification type can be either "send_all" or "send_only_failed". Default is "send_all"
+    EOF
+  type = object({
+    enabled           = bool
+    notification_type = optional(string, "send_all")
+  })
+  default = {
+    enabled = false
+  }
 
   validation {
-    condition     = contains(["Send All Scan Reports", "Send Only Failed Scan Reports"], var.sechub_notification_type)
-    error_message = "sechub_notification_type must be either Send All Scan Reports or Send Only Failed Scan Reports"
+    condition     = contains(["send_all", "send_only_failed"], var.aqua_sechub_integration.notification_type)
+    error_message = "sechub_notification_type must be either Send All Scan Reports (send_all) or Send Only Failed Scan Reports (send_only_failed)"
   }
 }

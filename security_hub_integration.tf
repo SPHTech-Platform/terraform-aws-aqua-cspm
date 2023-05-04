@@ -2,7 +2,7 @@ module "sechub_integration_lambda" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "~> 4.10.1"
 
-  count = var.enable_security_hub_integration ? 1 : 0
+  count = local.enable_security_hub_integration ? 1 : 0
 
   function_name = "${local.name_prefix}-sechub-integration-function"
   description   = "Retrieves the External ID from Aqua CSPM"
@@ -22,7 +22,7 @@ module "sechub_integration_lambda" {
 }
 
 resource "aws_lambda_invocation" "sechub_integration_external_id" {
-  count = var.enable_security_hub_integration ? 1 : 0
+  count = local.enable_security_hub_integration ? 1 : 0
 
   function_name = module.sechub_integration_lambda[0].lambda_function_name
   input = jsonencode({
@@ -40,7 +40,7 @@ resource "aws_lambda_invocation" "sechub_integration_external_id" {
 }
 
 resource "aws_lambda_invocation" "sechub_integration_onboarding" {
-  count = var.enable_security_hub_integration ? 1 : 0
+  count = local.enable_security_hub_integration ? 1 : 0
 
   function_name = module.sechub_integration_lambda[0].lambda_function_name
   input = jsonencode({
@@ -50,7 +50,7 @@ resource "aws_lambda_invocation" "sechub_integration_onboarding" {
       ExtId             = local.sechub_external_id,
       AccId             = data.aws_caller_identity.current.account_id,
       Region            = data.aws_region.current.name,
-      ScanNotifications = var.sechub_notification_type,
+      ScanNotifications = local.sechub_notification_type,
     },
     LogicalResourceId = "IntegrationInvoke"
   })
@@ -63,7 +63,7 @@ resource "aws_lambda_invocation" "sechub_integration_onboarding" {
 }
 
 resource "time_sleep" "sechub_integration_wait_10_seconds" {
-  count = var.enable_security_hub_integration ? 1 : 0
+  count = local.enable_security_hub_integration ? 1 : 0
 
   depends_on = [
     aws_lambda_invocation.sechub_integration_external_id,
@@ -73,7 +73,7 @@ resource "time_sleep" "sechub_integration_wait_10_seconds" {
 }
 
 resource "time_sleep" "sechub_integration_wait_10_aqua_cspm_secret" {
-  count = var.enable_security_hub_integration ? 1 : 0
+  count = local.enable_security_hub_integration ? 1 : 0
 
   depends_on = [
     aws_secretsmanager_secret_version.aqua_cspm_secret,
