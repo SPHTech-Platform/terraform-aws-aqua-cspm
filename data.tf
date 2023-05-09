@@ -353,3 +353,65 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
     aws_lambda_invocation.external_id,
   ]
 }
+
+data "aws_iam_policy_document" "aquahub_sechub_trust" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "sts:AssumeRole",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.aquasec_account_id}:role/uwbwh-lambda-cloudsploit-api"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "sts:ExternalId"
+      values = [
+        local.sechub_external_id,
+      ]
+    }
+  }
+
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "sts:AssumeRole",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.aquasec_account_id}:role/uwbwh-lambda-cloudsploit-executor"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "sts:ExternalId"
+      values = [
+        local.sechub_external_id,
+      ]
+    }
+  }
+
+  depends_on = [
+    aws_lambda_invocation.sechub_integration_external_id,
+  ]
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "aquasec_importfindings" {
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_108
+  statement {
+    actions = [
+      "securityhub:BatchImportFindings"
+    ]
+    resources = [
+      "*",
+    ]
+  }
+}
