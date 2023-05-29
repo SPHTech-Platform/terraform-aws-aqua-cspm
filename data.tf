@@ -357,6 +357,8 @@ data "aws_iam_policy_document" "aqua_cspm_custom_trust" {
 }
 
 data "aws_iam_policy_document" "aquahub_sechub_trust" {
+  count = local.enable_security_hub_integration ? 1 : 0
+
   statement {
     effect = "Allow"
 

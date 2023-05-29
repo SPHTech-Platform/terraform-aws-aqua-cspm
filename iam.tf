@@ -74,7 +74,7 @@ resource "aws_iam_role" "aqua_cspm_sechub" {
   path                 = "/"
   max_session_duration = "3600"
 
-  assume_role_policy = data.aws_iam_policy_document.aquahub_sechub_trust.json
+  assume_role_policy = data.aws_iam_policy_document.aquahub_sechub_trust[0].json
 }
 
 resource "aws_iam_role_policy_attachment" "aqua_cspm_sechub" {
