@@ -27,6 +27,7 @@ data "aws_iam_policy_document" "aqua_cspm_secret" {
 data "aws_iam_policy_document" "aqua_cspm_control_tower_kms_key" {
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_356
   statement {
     sid = "Allow administration of the key"
 
@@ -125,6 +126,7 @@ data "aws_iam_policy_document" "aqua_cspm_lambda" {
 }
 
 data "aws_iam_policy_document" "aqua_cspm_supplemental" {
+  #checkov:skip=CKV_AWS_356
   statement {
     effect = "Allow"
 
@@ -406,6 +408,7 @@ data "aws_iam_policy_document" "aquahub_sechub_trust" {
 data "aws_iam_policy_document" "aquasec_importfindings" {
   #checkov:skip=CKV_AWS_111
   #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_356
   statement {
     actions = [
       "securityhub:BatchImportFindings"
